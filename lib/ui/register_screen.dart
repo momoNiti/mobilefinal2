@@ -68,7 +68,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     ),
                     TextFormField(
                       controller: nameController,
-                      decoration: InputDecoration(labelText: "Name", icon: Icon(Icons.person_outline)),
+                      decoration: InputDecoration(labelText: "Name", icon: Icon(Icons.account_circle)),
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value.isEmpty){
@@ -81,7 +81,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     ),
                     TextFormField(
                       controller: ageController,
-                      decoration: InputDecoration(labelText: "Age", icon: Icon(Icons.calendar_today)),
+                      decoration: InputDecoration(labelText: "Age", icon: Icon(Icons.date_range)),
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value.isEmpty){

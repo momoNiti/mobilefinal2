@@ -86,6 +86,7 @@ class HomeScreenState extends State<HomeScreen> {
             RaisedButton(
               child: Text("SIGN OUT"),
               onPressed: () {
+                writeQuote("");
                 SharedPreferencesUtil.saveLastLogin(null);
                 Navigator.pushReplacementNamed(context, 'login');
                 // Navigator.of(context).pushNamed('login');

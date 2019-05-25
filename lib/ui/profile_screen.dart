@@ -152,9 +152,10 @@ class ProfileScreenState extends State<ProfileScreen> {
                         }
                       },
                     ),
+
                     TextFormField(
                       controller: quoteController,
-                      decoration: InputDecoration(labelText: "Quote"),
+                      decoration: InputDecoration(labelText: "Quote"),maxLines: 4,
                     ),
                     Row(
                       children: <Widget>[

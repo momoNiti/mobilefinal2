@@ -2,24 +2,29 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobilefinal2/ui/todoes_screen.dart';
 
-class FriendsScreen extends StatefulWidget {
+class TodoesScreen extends StatefulWidget {
+  final int id;
+  final String name;
+
+  TodoesScreen({Key key, @required this.id, @required this.name})
+      : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    return FriendsScreenState();
+    return TodoesScreenState();
   }
 }
 
-Future<List<User>> loadUsers() async {
-  final response = await http.get('https://jsonplaceholder.typicode.com/users');
+Future<List<Todoes>> loadUsers(int userId) async {
+  final response = await http
+      .get('https://jsonplaceholder.typicode.com/todos?userId=${userId}');
 
-  List<User> userApi = [];
+  List<Todoes> userApi = [];
 
   if (response.statusCode == 200) {
     var body = json.decode(response.body);
     for (int i = 0; i < body.length; i++) {
-      var user = User.fromJson(body[i]);
+      var user = Todoes.fromJson(body[i]);
       userApi.add(user);
     }
     return userApi;
@@ -28,33 +33,31 @@ Future<List<User>> loadUsers() async {
   }
 }
 
-class User {
+class Todoes {
+  final int userId;
   final int id;
-  final String name;
-  final String email;
-  final String phone;
-  final String website;
+  final String title;
+  final bool completed;
 
-  User({this.id, this.name, this.email, this.phone, this.website});
+  Todoes({this.userId, this.id, this.title, this.completed});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory Todoes.fromJson(Map<String, dynamic> json) {
+    return Todoes(
+      userId: json['userId'],
       id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      phone: json['phone'],
-      website: json['website'],
+      title: json['title'],
+      completed: json['completed'],
     );
   }
 }
 
-class FriendsScreenState extends State<FriendsScreen> {
+class TodoesScreenState extends State<TodoesScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("Friend"),
+        title: Text("${widget.name} Todo"),
       ),
       body: Column(
         children: <Widget>[
@@ -75,7 +78,7 @@ class FriendsScreenState extends State<FriendsScreen> {
             padding: EdgeInsets.all(5),
           ),
           FutureBuilder(
-            future: loadUsers(),
+            future: loadUsers(widget.id),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasError) print("load data error");
               return snapshot.hasData
@@ -91,7 +94,7 @@ class FriendsScreenState extends State<FriendsScreen> {
   }
 
   Widget FriendList(BuildContext context, AsyncSnapshot snapshot) {
-    List<User> values = snapshot.data;
+    List<Todoes> values = snapshot.data;
     return new Expanded(
       child: new ListView.builder(
         itemCount: values.length,
@@ -102,33 +105,22 @@ class FriendsScreenState extends State<FriendsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "${(values[index].id).toString()} : ${values[index].name}",
+                    "${(values[index].id).toString()}",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 10)),
                   Text(
-                    values[index].email,
+                    values[index].title.toString(),
                     style: TextStyle(fontSize: 16),
                   ),
-                  Text(
-                    values[index].phone,
+                  values[index].completed == true?
+                    Text(
+                    "Completed",
                     style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    values[index].website,
-                    style: TextStyle(fontSize: 16),
-                  ),
+                  ):Text("")
+
                 ],
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TodoesScreen(
-                        id: values[index].id, name: values[index].name),
-                  ),
-                );
-              },
             ),
           );
         },
