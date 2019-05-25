@@ -179,7 +179,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            HomeScreen(account)));
+                                            HomeScreen()));
                               }
                             },
                           ),
