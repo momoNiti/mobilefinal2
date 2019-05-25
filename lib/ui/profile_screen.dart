@@ -172,7 +172,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                                       userName: userNameController.text,
                                       name: nameController.text,
                                       age: int.parse(ageController.text),
-                                      password: account.password),
+                                      password: passwordController.text),
                                 );
 
                                 Navigator.pushReplacement(
