@@ -6,6 +6,8 @@ import 'package:mobilefinal2/util/sharepref.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  final Account account;
+  HomeScreen(this.account);
   @override
   State<StatefulWidget> createState() {
     return HomeScreenState();
@@ -42,21 +44,11 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   //
-  static Account account;
-  final AccountProvider db = AccountProvider();
   void initState() {
     super.initState();
     readQuote().then((value) {
       setState(() {
         quotes = value;
-      });
-    });
-    setState(() {
-      SharedPreferencesUtil.loadLastLogin().then((value) async {
-        await db.open('account.db');
-        db.getAccountByUserId(value).then((values) {
-          HomeScreenState.account = values;
-        });
       });
     });
   }
@@ -72,7 +64,7 @@ class HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: <Widget>[
             Text(
-              "Hello ${account.name}",
+              "Hello ${widget.account.name}",
               style: TextStyle(fontSize: 20),
             ),
             Text("This is my quote \"${quotes}\""),
@@ -94,7 +86,6 @@ class HomeScreenState extends State<HomeScreen> {
             RaisedButton(
               child: Text("SIGN OUT"),
               onPressed: () {
-                writeQuote("");
                 SharedPreferencesUtil.saveLastLogin(null);
                 Navigator.pushReplacementNamed(context, 'login');
                 // Navigator.of(context).pushNamed('login');

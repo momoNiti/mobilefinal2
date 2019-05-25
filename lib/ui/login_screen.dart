@@ -29,7 +29,7 @@ class LoginScreenState extends State<LoginScreen> {
           db.getAccountByUserId(userId).then((account) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
+              MaterialPageRoute(builder: (context) => HomeScreen(account)),
             );
           });
         });
@@ -102,7 +102,7 @@ class LoginScreenState extends State<LoginScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              HomeScreen()),
+                                              HomeScreen(account)),
                                     );
                                   }
                                 });
