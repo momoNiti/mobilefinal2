@@ -147,7 +147,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                         if (value.isEmpty) {
                           return "Password is required";
                         }
-                        if (value.length < 6) {
+                        if (value.length <= 6) {
                           return "Password ต้องมีความยาวมากกว่า 6";
                         }
                       },
